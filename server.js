@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import { userRouter } from "./src/features/users/routes.js";
 import { connectToDB } from "./src/config/mongoose.config.js";
+import {errorHandler} from "./src/middlewares/errorHandling.middleware.js";
 
 const app = express();
 
@@ -15,6 +16,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/users", userRouter);
+
+app.use(errorHandler);
 
 app.listen(process.env.PORT, () => {
   console.log(`App started and running on port: ${process.env.PORT}`);

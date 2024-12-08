@@ -1,3 +1,4 @@
+import { CustomError } from "../../util/customError.js";
 import { userModel } from "./model.js";
 import bcrypt from "bcryptjs";
 
@@ -25,7 +26,7 @@ class UserRepository {
         .findOne({ email: email })
         .select("+password");
       if (!userFound) {
-        throw new Error("user not found");
+        throw new CustomError("user not found", 404);
       }
 
       const verify = bcrypt.compareSync(password, userFound.password);
@@ -53,12 +54,15 @@ class UserRepository {
   updateUser = async (role, updatePayload, userIdToUpdate) => {
     try {
       if (role !== "admin") {
-        throw new Error("Forbidden");
+        throw new CustomError(
+          "You are not authorized to update this user",
+          403
+        );
       }
 
       const user = await userModel.findById(userIdToUpdate);
       if (!user) {
-        throw new Error("User not found");
+        throw new CustomError("User not found", 404);
       }
 
       const updatedUser = await userModel.findByIdAndUpdate(

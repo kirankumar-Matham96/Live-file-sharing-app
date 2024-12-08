@@ -1,6 +1,7 @@
 import userRepository from "./repository.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { CustomError } from "../../util/customError.js";
 
 class UserController {
   signup = async (req, res, next) => {
@@ -79,7 +80,7 @@ class UserController {
       const { id } = req.params;
       const { role } = req;
       if (role !== "admin")
-        throw new Error("You cannot delete other user data");
+        throw new CustomError("You cannot delete other user data", 403);
 
       const isDeleted = await userRepository.removeUser(id);
       console.log(
@@ -87,12 +88,10 @@ class UserController {
         isDeleted
       );
 
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: `User with ID ${isDeleted} is deleted`,
-        });
+      res.status(200).json({
+        success: true,
+        message: `User with ID ${isDeleted} is deleted`,
+      });
     } catch (error) {
       next(error);
     }
