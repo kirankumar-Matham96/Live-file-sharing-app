@@ -30,12 +30,17 @@ class UserRepository {
       }
 
       const verify = bcrypt.compareSync(password, userFound.password);
-      const user = userFound;
+      console.log("🚀 ~ UserRepository ~ userSignIn= ~ verify:", verify);
+
+      if (!verify) {
+        throw new CustomError("Invalid password", 400);
+      }
+
       return {
-        userId: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
+        userId: userFound._id,
+        name: userFound.name,
+        email: userFound.email,
+        role: userFound.role,
       };
     } catch (error) {
       throw error;

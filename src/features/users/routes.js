@@ -10,7 +10,11 @@ userRouter.post(
   userValidations.signUpValidation,
   userController.signup
 );
-userRouter.post("/signin", userController.signin);
+userRouter.post(
+  "/signin",
+  userValidations.signInValidation,
+  userController.signin
+);
 userRouter.get("/:id", auth, userController.getUserById);
 userRouter.put("/:id", auth, userController.updateUserById);
 userRouter.delete("/:id", auth, userController.deleteUserById);
