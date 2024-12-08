@@ -2,7 +2,8 @@ import "dotenv/config";
 import express from "express";
 import { userRouter } from "./src/features/users/routes.js";
 import { connectToDB } from "./src/config/mongoose.config.js";
-import {errorHandler} from "./src/middlewares/errorHandling.middleware.js";
+import { errorHandler } from "./src/middlewares/errorHandling.middleware.js";
+import { fileRouter } from "./src/features/files/routes.js";
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/users", userRouter);
+app.use("/api/files", fileRouter);
 
 app.use(errorHandler);
 
