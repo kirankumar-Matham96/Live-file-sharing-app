@@ -71,6 +71,16 @@ class UserRepository {
       throw error;
     }
   };
+
+  removeUser = async (id) => {
+    try {
+      const user = await userModel.findByIdAndDelete(id);
+      console.log("🚀 ~ UserRepository ~ removeUser= ~ user:", user);
+      return user.id;
+    } catch (error) {
+      throw error;
+    }
+  };
 }
 
 export default new UserRepository();
